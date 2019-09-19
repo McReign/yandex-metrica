@@ -8,13 +8,14 @@ export default ({ app: { router } }) => {
 
   function create() {
     window['yaCounter<%= options.id %>'] = new Ya.Metrika(<%= JSON.stringify(options) %>)
+    const origin = window.location.origin;
     router.afterEach((to, from) => {
       if (!ready) {
         // Don't record a duplicate hit for the initial navigation.
         return
       }
-      window['yaCounter<%= options.id %>'].hit(to.fullPath, {
-        referer: from.fullPath
+      window['yaCounter<%= options.id %>'].hit(origin + to.fullPath, {
+        referer: origin + from.fullPath
         // TODO: pass title: <new page title>
         // This will need special handling because router.afterEach is called *before* DOM is updated.
       })
